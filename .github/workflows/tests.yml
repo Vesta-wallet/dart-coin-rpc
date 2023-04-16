@@ -17,7 +17,7 @@ jobs:
           RPC_PASSWORD: password
         ports:
           - '9902:9902'
-        command:
+        options:
           -rest
           -nominting
           -printtoconsole

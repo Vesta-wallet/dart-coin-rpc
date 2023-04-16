@@ -132,7 +132,11 @@ class RPCClient {
               code: 401,
               message: 'Unauthorized',
             );
-
+          case "The request returned an invalid status code of 403.":
+            throw HTTPException(
+              code: 403,
+              message: 'Forbidden',
+            );
           case "Http status error [404]":
             if (errorResponseBody != null) {
               throw RPCException(

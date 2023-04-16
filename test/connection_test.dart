@@ -55,7 +55,7 @@ void main() async {
       test(
         'try wrong port',
         () async {
-          var client = RPCClient(
+          var wrongClient = RPCClient(
             username: 'rpc',
             password: 'verywrongpassword',
             port: 9999,
@@ -63,7 +63,7 @@ void main() async {
             useSSL: false,
           );
           expect(
-            () async => await client.call('help'),
+            () async => await wrongClient.call('help'),
             throwsA(
               isA<HTTPException>(),
             ),

@@ -124,21 +124,20 @@ class RPCClient {
       }
     } on DioError catch (e) {
       if (e.type == DioErrorType.badResponse) {
-        var errorResponseBody = e.response!.data;
+        var errorResponseBody = e.message;
 
-        switch (e.error) {
-          case "Http status error [401]":
+        switch (errorResponseBody) {
+          case "The request returned an invalid status code of 401.":
             throw HTTPException(
               code: 401,
               message: 'Unauthorized',
             );
 
           case "Http status error [404]":
-            if (errorResponseBody['error'] != null) {
-              var error = errorResponseBody['error'];
+            if (errorResponseBody != null) {
               throw RPCException(
-                errorCode: error['code'],
-                errorMsg: error['message'],
+                errorCode: 404,
+                errorMsg: errorResponseBody,
                 method: methodName,
                 params: params ?? [],
               );
@@ -148,13 +147,12 @@ class RPCClient {
               message: 'Internal Server Error',
             );
           default:
-            if (errorResponseBody['error'] != null) {
-              var error = errorResponseBody['error'];
+            if (errorResponseBody != null) {
               throw RPCException(
-                errorCode: error['code'],
-                errorMsg: error['message'],
+                errorCode: 400,
+                errorMsg: errorResponseBody,
                 method: methodName,
-                params: params,
+                params: params ?? [],
               );
             }
             throw HTTPException(
@@ -165,7 +163,7 @@ class RPCClient {
       } else if (e.type == DioErrorType.unknown) {
         throw HTTPException(
           code: 500,
-          message: e.message!,
+          message: e.error.toString(),
         );
       }
     }

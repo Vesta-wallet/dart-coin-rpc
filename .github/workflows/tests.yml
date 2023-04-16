@@ -16,7 +16,7 @@ jobs:
           RPC_USER: rpc
           RPC_PASSWORD: password
         ports:
-          - '9902:9902'
+          - '9902:9903'
     steps:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1.5.0

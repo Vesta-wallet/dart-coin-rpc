@@ -12,9 +12,7 @@ class RPCClient {
   String username;
   String password;
   bool useSSL;
-  Dio? _dioClient;
-  late String _url;
-  late Map<String, String> _headers;
+  Dio? dioClient;
 
   RPCClient({
     required this.host,
@@ -77,18 +75,19 @@ class RPCClient {
   }
 
   Future<dynamic> call(var methodName, [var params]) async {
+    final headers = {
+      'Content-Type': 'application/json',
+      'authorization':
+          'Basic ${base64.encode(utf8.encode('$username:$password'))}'
+    };
+    final url = getConnectionString();
+
     // init values
-    if (_dioClient == null) {
-      _headers = {
-        'Content-Type': 'application/json',
-        'authorization':
-            'Basic ${base64.encode(utf8.encode('$username:$password'))}'
-      };
-      _url = getConnectionString();
-      _dioClient = Dio();
-      _dioClient!.interceptors.add(
+    if (dioClient == null) {
+      dioClient = Dio();
+      dioClient!.interceptors.add(
         RetryInterceptor(
-          dio: _dioClient!,
+          dio: dioClient!,
           logPrint: null,
           retries: 5,
         ),
@@ -102,11 +101,11 @@ class RPCClient {
     };
 
     try {
-      var response = await _dioClient!.post(
-        _url,
+      var response = await dioClient!.post(
+        url,
         data: body,
         options: Options(
-          headers: _headers,
+          headers: headers,
         ),
       );
       if (response.statusCode == HttpStatus.ok) {

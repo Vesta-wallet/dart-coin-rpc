@@ -132,7 +132,11 @@ class RPCClient {
               code: 401,
               message: 'Unauthorized',
             );
-
+          case 403:
+            throw HTTPException(
+              code: 403,
+              message: 'Forbidden',
+            );
           case 404:
             if (errorResponseBody['error'] != null) {
               var error = errorResponseBody['error'];

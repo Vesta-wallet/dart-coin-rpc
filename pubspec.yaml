@@ -1,6 +1,6 @@
 name: dart_coin_rpc
 description: A simple RPC client for bitcoin-like coins created in dart.
-version: 2.1.6
+version: 2.1.7
 homepage: https://github.com/peercoin/dart_coin_rpc
 
 environment:

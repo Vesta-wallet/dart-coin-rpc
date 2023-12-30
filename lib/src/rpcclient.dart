@@ -125,6 +125,7 @@ class RPCClient {
     } on DioException catch (e) {
       if (e.type == DioExceptionType.badResponse) {
         var errorResponseBody = e.response!.data;
+        print(e);
 
         switch (e.response!.statusCode) {
           case 401:

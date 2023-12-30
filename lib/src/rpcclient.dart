@@ -110,9 +110,14 @@ class RPCClient {
         ),
       );
       if (response.statusCode == HttpStatus.ok) {
-        var body = response.data;
-        if (body['error'] != null) {
-          var error = body['error']['message'];
+        var body = response.data as Map<String, dynamic>;
+        if (body.containsKey('error') && body["error"] != null) {
+          var error = body['error'];
+
+          if (error["message"] is Map<String, dynamic>) {
+            error = error['message'];
+          }
+
           throw RPCException(
             errorCode: error['code'],
             errorMsg: error['message'],

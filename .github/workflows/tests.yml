@@ -15,6 +15,7 @@ jobs:
         env:
           RPC_USER: rpc
           RPC_PASSWORD: password
+          RPC_PORT: 9902
         ports:
           - '9902:9902'
     steps:

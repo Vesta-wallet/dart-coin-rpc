@@ -122,18 +122,18 @@ class RPCClient {
         }
         return body['result'];
       }
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
         var errorResponseBody = e.response!.data;
 
-        switch (e.error) {
-          case "Http status error [401]":
+        switch (e.response!.statusCode) {
+          case 401:
             throw HTTPException(
               code: 401,
               message: 'Unauthorized',
             );
 
-          case "Http status error [404]":
+          case 404:
             if (errorResponseBody['error'] != null) {
               var error = errorResponseBody['error'];
               throw RPCException(
@@ -162,12 +162,16 @@ class RPCClient {
               message: 'Internal Server Error',
             );
         }
-      } else if (e.type == DioErrorType.other) {
+      } else if (e.type == DioExceptionType.connectionError) {
         throw HTTPException(
           code: 500,
-          message: e.message,
+          message: e.message ?? 'Connection Error',
         );
       }
+      throw HTTPException(
+        code: 500,
+        message: e.message ?? 'Unknown Error',
+      );
     }
   }
 }

@@ -1,3 +1,7 @@
+# 2.1.6
+- Update dart, linter & dependencies
+- Dio 5.4.0 is now used
+
 # 2.1.5
 - Correctly forward RPC errors that are not 404
 - disable loggint to print

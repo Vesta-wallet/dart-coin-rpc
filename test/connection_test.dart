@@ -5,7 +5,7 @@ void main() async {
   RPCClient client = RPCClient(
     username: 'rpc',
     password: 'password',
-    port: 9902,
+    port: 9903,
     host: '127.0.0.1',
     useSSL: false,
   );
